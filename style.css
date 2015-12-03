@@ -1,0 +1,73 @@
+body{
+	
+	margin-bottom: 0;
+	margin-left: 0; 
+	margin-top: 0;
+	margin-right: 0;
+	
+}
+
+#meny
+{
+	background-color:green;
+	margin: 0 5vw 0 5vw;
+	width: 90vw;
+	height: 7vw;
+}
+
+#home
+{
+	width: 20vw;
+	height: 7vw;
+	color: blue;
+	float: left;
+}
+
+#menyinfo
+{
+	text-align: center;
+}
+#h1
+{
+	/*medi-grejen för responsiv text*/
+}
+#bok
+{
+	width: 20vw;
+	height: 7vw;
+	
+}
+
+#container
+{
+	background-color: rgba(50, 50, 50, 0.1 );
+	margin: 0 5vw 0 5vw;
+	height: 40vw;
+	width: 90vw;
+	
+}
+
+#containerLeft
+{
+	height: 40vw;
+	width: 20vw;
+	float: left;
+}
+
+.search
+{
+	background-color:red;
+	width: 20vw;
+	height: 10vw;
+	border-radius: 10px;
+	box-shadow: 10px 5px 10px 5px grey;
+}
+
+
+#containerRight
+{
+	
+	width: 70vw;
+	height: 40vw;
+	float: right;
+}
