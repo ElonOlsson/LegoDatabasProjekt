@@ -24,26 +24,27 @@
 		<div id="containerLeft">
 			<form action="testTaEmot.php" method="post">
 				<div id="search" class="search">
-				Search:<br>
-							<input type="text" name="text">
-							<br>
+					<p class="searchText">Search:</p>
+					<br>
+					<input class="searchBox" type="text" name="text">
+					<br>
 				</div>
 				<div id="years" class="search">
-				Year:<br>
-							<input type="number" name="firstYear">
-							<input type="number" name="secondYear">
-							<br>
-							
+					<p class="searchText">Year:</p>
+					<br>
+					<input class="numberBox" type="number" name="firstYear" min="1930" max="2016" step="1" value="1930">
+					<input class="numberBox" type="number" name="secondYear" min="1930" max="2016" step="1" value="2016">
+					<br>			
 				</div>
 				<div id="categories" class="search">		<!-- kolla printScrn-bilden php/mysql loopa categorier-->
-				Categories:<br>
-							<input type="text" name="text"> <!-- type=" någon slags dropdown" -->
-							<br>
+					<p class="searchText">Categories:</p>
+					<br>
+					<input class="searchBox" type="text" name="text"> <!-- type=" någon slags dropdown" -->
+					<br>
 				</div>
 				<div id="go" class="search">
-					<input  type="submit" value="post">
+					<input id="postButton" type="submit" value="post">
 				</div>
-				
 			</form>
 		</div>
 		<div id="containerRight">

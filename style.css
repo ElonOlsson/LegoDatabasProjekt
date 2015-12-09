@@ -61,13 +61,33 @@ body{
 	height: 10vw;
 	border-radius: 10px;
 	box-shadow: 10px 5px 10px 5px grey;
+	text-align: center;
 }
 
 
 #containerRight
 {
-	
 	width: 70vw;
 	height: 40vw;
 	float: right;
+}
+.searchText
+{
+	margin-top: 0;
+}
+.searchBox
+{
+	margin: 0 1vw 0 1vw;
+	width: 14vw;
+}
+.numberBox
+{	
+	margin: 0 1vw 0 1vw;
+	width:6vw;
+}
+#postButton
+{
+	margin-top:3vw;
+	width: 5vw;
+	height: 2vw;
 }
