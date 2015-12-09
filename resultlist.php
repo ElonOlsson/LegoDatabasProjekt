@@ -37,7 +37,7 @@
 				</div>
 				<div id="categories" class="search">	<!-- kolla printScrn-bilden php/mysql loopa categorier-->
 				Categories:<br>
-							<input type="text" name="text"> <!-- type=" någon slags dropdown" -->
+							<input type="text" name="categories"> <!-- type=" någon slags dropdown" -->
 							<br>
 				</div>
 				<div id="go" class="search">
@@ -48,7 +48,39 @@
 		</div>
 		<div id="containerRight">
 <!-- loopen som hämtar ett sökresultat i taget skall ligga här-->
-<!-- -->
+
+<!--Searchfunction-->
+		<?php
+			// Koppla upp mot databasen
+			mysql_connect("mysql.itn.liu.se", "blog_edit", "bloggotyp");
+			mysql_select_db("blog");
+			// Ställ frågan
+			$searchtext			=$_POST['text'];
+			$searchfirstyear	=$_POST['firstYear'];
+			$searchsecondyear	=$_POST['secondYear'];
+			$searchcategories	=$_POST['categories'];
+			//ställer frågan
+			$searchresult = mysql_query("SELECT * FROM sets, categories
+			WHERE sets.CategoryID=categories.CategoryID 
+			AND Year >='$searchfirstyear' AND Year=<'$searchsecondyear' 
+			AND Categoryname='$searchcategories'
+			AND (SetID ='%searchtext%' OR Setname='%searchtext%' OR Categoryname='%searchtext%')");
+			
+			
+			$searchresult = mysql_query("SELECT * FROM malej288 WHERE entry_heading LIKE '$searchkey' OR 
+			entry_text LIKE '%{$searchkey}%' OR entry_author LIKE '%{$searchkey}%'");
+			// Skriv ut alla poster i svaret
+			while ($row = mysql_fetch_array($searchresult)) {
+				$heading = $row['entry_heading'];
+				print("<h2>$heading</h2>\n");
+				$author = $row['entry_author'];
+				$date = $row['entry_date'];
+				$text = $row['entry_text'];
+				print("<p>$text</p>\n");
+				print("<p><em>- $author, $date</em></p>\n");
+				print("<hr/>");
+			} // end while
+		?> 
 		</div>
 	</div>
 	
