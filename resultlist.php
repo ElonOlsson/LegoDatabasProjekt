@@ -41,13 +41,14 @@
 							<br>
 				</div>
 				<div id="go" class="search">
-					<input  type="submit" value="post">
+					<input  type="submit" value="post"> <!-- submit bör på nåogot vis skicka frågan till databasen-->
 				</div>
 				
 			</form>
 		</div>
 		<div id="containerRight">
-		
+<!-- loopen som hämtar ett sökresultat i taget skall ligga här-->
+<!-- -->
 		</div>
 	</div>
 	

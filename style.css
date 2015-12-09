@@ -1,10 +1,9 @@
 body{
-	
+	background-image: url(lego.jpg);
 	margin-bottom: 0;
 	margin-left: 0; 
 	margin-top: 0;
 	margin-right: 0;
-	
 }
 
 #meny
@@ -35,7 +34,6 @@ body{
 {
 	width: 20vw;
 	height: 7vw;
-	
 }
 
 #container
@@ -43,8 +41,7 @@ body{
 	background-color: rgba(50, 50, 50, 0.1 );
 	margin: 0 5vw 0 5vw;
 	height: 40vw;
-	width: 90vw;
-	
+	width: 90vw;	
 }
 
 #containerLeft
