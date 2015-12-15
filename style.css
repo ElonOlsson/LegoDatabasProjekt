@@ -67,10 +67,18 @@ body{
 	width: 70vw;
 	height: 40vw;
 	float: right;
+	overflow: auto;
+	background-color: #fff;
 }
 .searchText
 {
 	margin-top: 0;
+}
+h6
+{
+	font-size: 14px;
+	font-family: "Times New Roman", cursive, sans-serif;
+	margin-left: 2%;
 }
 .searchBox
 {
