@@ -53,11 +53,12 @@ body{
 
 .search
 {
-	background-color:red;
+	background-color:orange;
+	/*opacity: 1;*/
 	width: 20vw;
 	height: 10vw;
 	border-radius: 10px;
-	box-shadow: 2px 5px 10px 5px grey;
+	box-shadow: 2px 5px 10px 5px blue;
 	text-align: center;
 }
 
@@ -67,10 +68,18 @@ body{
 	width: 70vw;
 	height: 40vw;
 	float: right;
+	overflow: auto;
+	background-color: #fff;
 }
 .searchText
 {
 	margin-top: 0;
+}
+h6
+{
+	font-size: 14px;
+	font-family: "Times New Roman", cursive, sans-serif;
+	margin-left: 2%;
 }
 .searchBox
 {
