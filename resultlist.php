@@ -1,119 +1,157 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<link href="style.css" media="screen" rel="stylesheet" type="text/css"/>
-		<title>Databas för LEGO-satser</title>
-	</head>
-	<body>
+<head>
+	<meta charset="utf-8">
+	<link href="style.css" media="screen" rel="stylesheet" type="text/css"/>
+	<title>Databas för LEGO-satser</title>
+	<script src="java.js"></script>
+</head>
+<body onload="clock()">
 	<div id="meny">
-		
-		
-			<a href="intedex.html">
-				<span id="home">
-				<img id="bok" src="bok.jpg">
-				</span>
-			</a>
-		
-		
+		<a href="intedex.html">
+			<span id="home">
+			<img id="logo" src="logo2.jpg" alt="logo">
+			</span>
+		</a>
 		<div id="menyinfo">
-			<h1>Browse</h1>
+			<h1>DATABASE - SETS</h1>		<!--Fonten kräver CAPS, litet t = gubbe-->
 		</div>
 	</div>
 	<div id="container">
 		<div id="containerLeft">
-		
-		<form action="resultlist.php" method="post">
+			<form action="resultlist.php" method="GET">
 				<div id="search" class="search">
-					<p class="searchText">Search:</p>
+					<p class="searchText">SEARCH SET</p>
 					<br>
-					<input class="searchBox" type="text" name="text">
+					<input class="searchBox" type="text" name="text" value="<?php echo $_GET['text']; ?>">
 					<br>
 				</div>
 				<div id="years" class="search">
-					<p class="searchText">Year:</p>
+					<p class="searchText">YEAR</p>
 					<br>
-					<input class="numberBox" type="number" name="firstYear" min="1930" max="2016" step="1" value="1930">
-					<input class="numberBox" type="number" name="secondYear" min="1930" max="2016" step="1" value="2016">
+					<input class="numberBox" type="number" name="firstYear" min="1930" max="2016" step="1" value="<?php echo $_GET['firstYear']; ?>">
+					<input class="numberBox" type="number" name="secondYear" min="1930" max="2016" step="1" value="<?php echo $_GET['secondYear']; ?>">
 					<br>			
 				</div>
-				<div id="categories" class="search">		<!-- kolla printScrn-bilden php/mysql loopa categorier-->
-					<p class="searchText">Categories:</p>
+				<div id="categories" class="search">		
+					<p class="searchText">CATEGORIES</p>
 					<br>
-					<input class="searchBox" type="text" name="categories"> <!-- type=" någon slags dropdown" -->
+					<input class="searchBox" type="text" name="categories" value="<?php echo $_GET['categories']; ?>"> 
 					<br>
 				</div>
 				<div id="go" class="search">
-					<input id="postButton" type="submit" value="post">
+					<input id="postButton" type="submit" value="GO">
 				</div>
 			</form>
-			
+			<button id="help" onclick="myFunction()">HELP</button>
 		</div>
 		<div id="containerRight">
-<!-- loopen som hämtar ett sökresultat i taget skall ligga här-->
 
-<!--Searchfunction-->
-		<?php
-			// Koppla upp mot databasen
-			mysql_connect("mysql.itn.liu.se", "lego", "");
-			mysql_select_db("lego");
-			// Ställ frågan
-			$searchtext			=isset($_POST['text']) ? $_POST['text'] : ' ';
-			$searchfirstyear	=isset($_POST['firstYear']) ? $_POST['firstYear'] : ' ';
-			$searchsecondyear	=isset($_POST['secondYear']) ? $_POST['secondYear'] : ' ';
-			$searchcategories	=isset($_POST['categories']) ? $_POST['categories'] : ' ';
-			$searchresult = mysql_query("SELECT sets.Setname, sets.SetID FROM sets, categories
-			WHERE sets.CatID=categories.CatID
-			AND sets.Year >='$searchfirstyear'		
-			AND sets.Year <='$searchsecondyear'
-			AND categories.Categoryname LIKE '%{$searchcategories}%' 
-			AND (sets.SetID LIKE '%{$searchtext}%' OR sets.Setname LIKE '%{$searchtext}%' OR categories.Categoryname LIKE '%{$searchtext}%')
-			ORDER BY sets.Setname");
-			
-			// if($searchresult == FALSE) { 
-				// die(mysql_error());
-			// }
-			
-			while($row = mysql_fetch_array($searchresult))
-			{
-			$showsetname = $row['Setname'];
-			$tempsetid = $row['SetID'];
-			$linkinfo='setinfo.php?SetID=' . $tempsetid;
-			print ("<a href=$linkinfo><h6>$showsetname</h6></a>\n");
-			}
-			
-			
-			
-			// , categories
-			// AND (sets.SetID ='%searchtext%' OR sets.Setname='%searchtext%' OR categories.Categoryname='%searchtext%')
-				// AND Categoryname='$searchcategories'
-				// 
-				//AND (SetID ='%searchtext%' OR Setname='%searchtext%' )
+	<!--Searchfunction-->
+			<?php
+				// Koppla upp mot databasen
+				mysql_connect("mysql.itn.liu.se", "lego", "");
+				mysql_select_db("lego");
+				
+				$searchtext			=mysql_real_escape_string(isset($_GET['text']) ? $_GET['text'] : ' ');
+				$searchfirstyear	=mysql_real_escape_string(isset($_GET['firstYear']) ? $_GET['firstYear'] : ' ');
+				$searchsecondyear	=mysql_real_escape_string(isset($_GET['secondYear']) ? $_GET['secondYear'] : ' ');
+				$searchcategories	=mysql_real_escape_string(isset($_GET['categories']) ? $_GET['categories'] : ' ');
+				
+				$searchresult = mysql_query("SELECT sets.Setname, sets.SetID, sets.Year
+				FROM sets, categories
+				WHERE sets.CatID=categories.CatID
+				AND sets.Year >='$searchfirstyear'		
+				AND sets.Year <='$searchsecondyear'
+				AND categories.Categoryname LIKE '%{$searchcategories}%' 
+				AND (sets.SetID LIKE '%{$searchtext}%' OR sets.Setname LIKE '%{$searchtext}%')
+				ORDER BY sets.Setname") or die ("Error in database table:" .mysql_error());			
+				
+				//antal resultat
+				$nrOfResult = mysql_num_rows($searchresult);
+				
+				//Återtal ska stämma, year 1<2
+				if($searchfirstyear <= $searchsecondyear)
+				{
+					//Search 
+					if ( $searchtext != NULL && $searchcategories != NULL)  // söker i "search" och "categories" 
+					{
+						print ("<h1 class=setName>Search results for: '<em>".$searchtext." / ".$searchcategories." (".$searchfirstyear."-".$searchsecondyear.") </em>'</h1><h6 class=setName>Number of matches: ".$nrOfResult." sets</h6>");
+					}
+					else if  ( $searchtext != NULL && $searchcategories == NULL)  // söker bara i "search"
+					{
+						print ("<h1 class=setName>Search results for: '<em>".$searchtext." (".$searchfirstyear."-".$searchsecondyear.") </em>'</h1><h6 class=setName>Number of matches: ".$nrOfResult." sets</h6>");
+					}	
+					else if ( $searchtext == NULL && $searchcategories != NULL)  // söker bara i "categories"
+					{
+						print ("<h1 class=setName>Search results for: '<em>".$searchcategories." (".$searchfirstyear."-".$searchsecondyear.") </em>'</h1><h6 class=setName>Number of matches: ".$nrOfResult." sets</h6>");
+					}	
+					else  // skriver inte i sökrutorna 
+					{
+						print ("<h1 class=setName>Search results for: '<em>(".$searchfirstyear."-".$searchsecondyear.") </em>'</h1><h6 class=setName>Number of matches: ".$nrOfResult." sets</h6>");
+					}
+				}
+				else
+				{
+					print("<h1 class=setName>Invalid input : years</h1>");
+				}
+				
+				//Tabellmeny
+				print("
+				<table>
+					<tr>
+						<th class='th1'>SetID</th>
+						<th class='th2'>Setname</th>
+						<th>Year</th>
+					</tr>
+					");
+				
+				$counter = 0;
+				do
+				{
+					$row = mysql_fetch_array($searchresult);
 					
+					if(count($row['SetID']) != 0) // Om det finns SetID (det vill säga sets) så visa dessa
+					{
+						$tempsetid = $row['SetID'];
+						$showsetname = $row['Setname'];
+						$showsetyear = $row['Year'];
+						//$linkinfo=\'setinfo.php?SetID=' .$tempsetid. '&text=' .$searchtext. '&firstYear=' .$searchfirstyear. '&secondYear=' .$searchsecondyear. '&categories='. $searchcategories.\;
+						print ("		
+							<tr>
+								<td class='tableID'>".$tempsetid."</td>
+								<td class='tableName'><a href=\"setinfo.php?SetID=$tempsetid&text=$searchtext&firstYear=$searchfirstyear&secondYear=$searchsecondyear&categories=$searchcategories\">$showsetname</a></td>
+								<td>".$showsetyear."</td>
+							</tr>
+						");
+						
+						$counter++;
+					}
+					else if ($counter != 0) // Finns det inga, men om loopen har körts innan (dvs kommit till slutet av loopen)
+					{
+						break;
+					}
+					else //Annars om det inte fanns några till att börja med
+					{
+						print("
+						<tr>
+						<td></td>
+						<td><h6>The search yielded no results</h6></td>
+						<td></td>
+						</tr>");
+						break;
+					}
+				} while(true); //Kör loopen sålänge det finns "Setname":s att tillgå
+				
+				print("</table>");
 				
 				
-			// while ($row = mysql_fetch_array($result)) {
-    // $heading = $row['entry_heading'];                       
-    // print("<h2>$heading</h2>\n");                           
-    // $author = $row['entry_author'];                         
-    // $date = $row['entry_date'];                             
-    // print("<p>$author, $date</p >\n");                      
-    // $text = $row['entry_text'];                             
-    // print("<p>$text</p>\n");                                
-    // print("<hr>");              
-	
-	
-	
-			// categories
-			// WHERE sets.CategoryID=categories.CategoryID 
-			// AND Year >='$searchfirstyear'		
-			// AND Year=<'$searchsecondyear' 
-			// AND Categoryname='$searchcategories'
-			// AND (SetID ='%searchtext%' OR Setname='%searchtext%' OR Categoryname='%searchtext%')"); 
-		
-		?> 
+			?> 
 		</div>
 	</div>
-	
-	</body>
+	<div id="footer">
+		<div id="creator"><p>© Elon Olsson, Jennifer Bedhammar - March, 2016</p></div>
+		<div id="txt"></div> <!--Datum + klocka, javascript-->
+	</div>
+</body>
 </html>
