@@ -14,7 +14,7 @@
 			</span>
 		</a>
 		<div id="menyinfo">
-			<h1>DATABASE - SETS</h1>		<!--Fonten kräver CAPS, litet t = gubbe-->
+			<h1>DATABASE - SETS</h1>
 		</div>
 	</div>
 	<div id="container">
@@ -53,7 +53,7 @@
 				mysql_connect("mysql.itn.liu.se", "lego", "");
 				mysql_select_db("lego");
 				
-				$searchtext			=mysql_real_escape_string(isset($_GET['text']) ? $_GET['text'] : ' ');
+				$searchtext		=mysql_real_escape_string(isset($_GET['text']) ? $_GET['text'] : ' ');
 				$searchfirstyear	=mysql_real_escape_string(isset($_GET['firstYear']) ? $_GET['firstYear'] : ' ');
 				$searchsecondyear	=mysql_real_escape_string(isset($_GET['secondYear']) ? $_GET['secondYear'] : ' ');
 				$searchcategories	=mysql_real_escape_string(isset($_GET['categories']) ? $_GET['categories'] : ' ');
